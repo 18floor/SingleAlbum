@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "ru.netology.singlealbum"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -34,8 +35,8 @@ android {
             manifestPlaceholders.usesCleartextTraffic = true
             buildConfigField "String", "BASE_URL", '"https://raw.githubusercontent.com/netology-code/andad-homeworks/master/09_multimedia/data/"'
         }
-
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -46,20 +47,20 @@ android {
 }
 
 dependencies {
-
     def core_version = "1.3.2"
     def appcompat_version = "1.2.0"
     def material = "1.3.0"
     def constraint_layout_version = "2.0.4"
+    def activity_version = "1.2.3"
+    def lifecycle_version = "2.3.1"
     def recyclerview_version = "1.2.0"
-    def lifecycle_version = "1.1.1"
     def junit_version = "4.13.2"
     def junit_ext = "1.1.2"
     def espresso_core_version = "3.3.0"
-    def rx2_android = "1.0.2"
-    def rxjava = "2.2.10"
-    def rx_android = "2.1.1"
-    def swipe_refresh_layout = "1.1.0"
+    def retrofit_version = "2.9.0"
+    def retrofitgson_version = "2.9.0"
+    def okhttploggin_version = "4.9.0"
+    def coroutines_version = "1.4.3"
 
 //  main lib
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -67,14 +68,20 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+    implementation "androidx.activity:activity-ktx:$activity_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout"
 
-//  rx-java lib
-    implementation "com.amitshekhar.android:rx2-android-networking:$rx2_android"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
-    implementation "io.reactivex.rxjava2:rxandroid:$rx_android"
+//  Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttploggin_version"
+
+//  Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
 //  tests lib
     testImplementation "junit:junit:$junit_version"
