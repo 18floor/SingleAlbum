@@ -3,7 +3,7 @@ package ru.netology.singlealbum
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import ru.netology.singlealbum.adapter.MusicAdapter
+import ru.netology.singlealbum.adapter.AlbumAdapter
 import ru.netology.singlealbum.adapter.OnInteractionListener
 import ru.netology.singlealbum.databinding.ActivityMainBinding
 import ru.netology.singlealbum.dto.Track
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val adapter = MusicAdapter(object : OnInteractionListener {
+        val adapter = AlbumAdapter(object : OnInteractionListener {
             override fun onPlayPause(track: Track) {
                 super.onPlayPause(track)
             }

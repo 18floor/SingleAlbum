@@ -13,7 +13,7 @@ interface OnInteractionListener {
     fun onPlayPause(track: Track) {}
 }
 
-class MusicAdapter(
+class AlbumAdapter(
     private val onInteractionListener: OnInteractionListener
 ) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
 
@@ -41,9 +41,7 @@ class TrackViewHolder(
                 onInteractionListener.onPlayPause(track)
             }
         }
-
     }
-
 }
 
 class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {

@@ -28,11 +28,11 @@ private val retrofit = Retrofit.Builder()
     .client(okhttp)
     .build()
 
-interface MusicApiService {
+interface AlbumApiService {
     @GET("album.json")
     suspend fun getAlbum(): Response<Album>
 }
 
-object MusicApi {
-    val apiService: MusicApiService by lazy(retrofit::create)
+object AlbumApi {
+    val apiService: AlbumApiService by lazy(retrofit::create)
 }

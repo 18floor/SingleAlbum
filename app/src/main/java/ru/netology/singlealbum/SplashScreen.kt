@@ -19,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(binding.root)
 
         val backgroundImage: ImageView = binding.logoIcon
-        val sideAnimation = AnimationUtils.loadAnimation(this, R.anim.side_slide)
+        val sideAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_up)
         backgroundImage.startAnimation(sideAnimation)
 
         Handler().postDelayed({
