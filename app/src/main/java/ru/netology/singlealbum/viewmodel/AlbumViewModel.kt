@@ -26,7 +26,6 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
         try {
             _album.value = AlbumModel(loading = true)
             _album.value = AlbumModel(repository.getAlbum())
-//            _album.value = AlbumModel()
 
         } catch (e: Exception) {
             _album.value = AlbumModel(error = true)

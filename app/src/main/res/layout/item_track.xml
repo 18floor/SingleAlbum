@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/containerView"
-    android:background="@color/white_overlay"
     android:layout_width="match_parent"
     android:layout_height="60dp">
 

@@ -2,7 +2,10 @@ package ru.netology.singlealbum
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.HeaderViewListAdapter
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import ru.netology.singlealbum.adapter.AlbumAdapter
 import ru.netology.singlealbum.adapter.OnInteractionListener
 import ru.netology.singlealbum.databinding.ActivityMainBinding
@@ -26,20 +29,25 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+
         binding.albumList.adapter = adapter
 
-        viewModel.album.observe(this) { album ->
-            binding.titleView.text = album.album.title
-            binding.artistView.text = album.album.artist
-            binding.subtitleView.text = album.album.subtitle
-            binding.publishedView.text = album.album.published
-            binding.genreView.text = album.album.genre
+        binding.albumList.addItemDecoration(
+            DividerItemDecoration(binding.albumList.context, DividerItemDecoration.VERTICAL),
+        )
 
 
-            adapter.submitList(album.album.tracks)
+        viewModel.album.observe(this) { state ->
+
+            binding.titleView.text = state.album.title
+            binding.artistView.text = state.album.artist
+            binding.subtitleView.text = state.album.subtitle
+            binding.publishedView.text = state.album.published
+            binding.genreView.text = state.album.genre
+
+            adapter.submitList(state.album.tracks)
         }
 
 
     }
-
 }

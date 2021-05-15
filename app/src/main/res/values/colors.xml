@@ -16,4 +16,20 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="white_overlay">#FFFFFF</color>
+
+    <color name="material_50">#0091EA</color>
+    <color name="material_501">#00B8D4</color>
+    <color name="material_50_alpha_50">#800091EA</color>
+    <color name="material_green_700">#00BFA5</color>
+    <color name="material_900">#0D47A1</color>
+    <color name="material_red_A700">#D50000</color>
+
+    <color name="gray_A100">#F7EEEE</color>
+    <color name="gray_A150">#DBD4D4</color>
+    <color name="gray_A200">#B9B5B5</color>
+    <color name="gray_A700">#A5A1A1</color>
+    <color name="gray_A400">#8A8383</color>
+
+    <color name="black">#000000</color>
+    <color name="black_12">#1F000000</color>
 </resources>
