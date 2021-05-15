@@ -15,41 +15,44 @@ interface OnInteractionListener {
 
 class AlbumAdapter(
     private val onInteractionListener: OnInteractionListener
-) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
+) : ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemTrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TrackViewHolder(binding, onInteractionListener)
     }
 
-    override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        val track = getItem(position)
-        holder.bind(track)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        getItem(position)?.let {
+            (holder as? TrackViewHolder)?.bind(it)
+        }
     }
-}
 
-class TrackViewHolder(
-    private val binding: ItemTrackBinding,
-    private val onInteractionListener: OnInteractionListener
-) : RecyclerView.ViewHolder(binding.root) {
+    class TrackViewHolder(
+        private val binding: ItemTrackBinding,
+        private val onInteractionListener: OnInteractionListener
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(track: Track) {
+        fun bind(track: Track) {
 
-        binding.apply {
-            trackName.text = track.file
-            playPauseButton.setOnClickListener {
-                onInteractionListener.onPlayPause(track)
+            binding.apply {
+                trackName.text = track.file
+                playPauseButton.setOnClickListener {
+                    onInteractionListener.onPlayPause(track)
+                }
             }
         }
     }
-}
 
-class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
-    override fun areItemsTheSame(oldItem: Track, newItem: Track): Boolean {
-        return oldItem.id == newItem.id
+    class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
+        override fun areItemsTheSame(oldItem: Track, newItem: Track): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
+            return oldItem == newItem
+        }
     }
 
-    override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
-        return oldItem == newItem
-    }
 }
+
