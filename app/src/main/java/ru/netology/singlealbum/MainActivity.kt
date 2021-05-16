@@ -3,6 +3,7 @@ package ru.netology.singlealbum
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.netology.singlealbum.adapter.AlbumAdapter
 import ru.netology.singlealbum.adapter.OnInteractionListener
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
 
         viewModel.album.observe(this) { state ->
+
+            binding.progressView.isVisible = state.loading
 
             binding.titleView.text = state.album.title
             binding.artistView.text = state.album.artist

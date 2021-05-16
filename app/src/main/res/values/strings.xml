@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">SingleAlbum</string>
+    <string name="app_name">SoundHelix Songs</string>
+    <string name="cover">Cover</string>
 </resources>
