@@ -2,8 +2,6 @@ package ru.netology.singlealbum
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.HeaderViewListAdapter
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.netology.singlealbum.adapter.AlbumAdapter
