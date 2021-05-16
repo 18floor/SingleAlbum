@@ -59,7 +59,7 @@ dependencies {
     def espresso_core_version = "3.3.0"
     def retrofit_version = "2.9.0"
     def retrofitgson_version = "2.9.0"
-    def okhttploggin_version = "4.9.0"
+    def okhttploggin_version = "4.9.1"
     def coroutines_version = "1.4.3"
 
 //  main lib
