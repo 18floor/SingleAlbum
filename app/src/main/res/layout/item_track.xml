@@ -33,9 +33,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Theme.SingleAlbum.IconButton"
+        android:checkable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/trackName"
         app:layout_constraintBottom_toBottomOf="@id/trackName"
-        app:icon="@drawable/ic_play_24"/>
+        app:icon="@drawable/ic_play_pause"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

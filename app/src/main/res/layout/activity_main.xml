@@ -11,7 +11,7 @@
         android:id="@+id/coverView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/cover"
+        android:src="@drawable/electronic_cover"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/cover" />
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
-        android:textSize="@dimen/big_title_text"
+        android:textSize="@dimen/regular_text"
         app:layout_constraintStart_toEndOf="@id/coverView"
         app:layout_constraintTop_toBottomOf="@id/publishedView"
         tools:text="electronic" />
