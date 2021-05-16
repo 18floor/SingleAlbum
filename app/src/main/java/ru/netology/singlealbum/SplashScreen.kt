@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.singlealbum.databinding.SplashScreenBinding
 
@@ -19,14 +20,22 @@ class SplashScreen : AppCompatActivity() {
         setContentView(binding.root)
 
         val backgroundImage: ImageView = binding.logoIcon
-        val sideAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_up)
+        val sideAnimation = AnimationUtils.loadAnimation(this, R.anim.side_slide)
         backgroundImage.startAnimation(sideAnimation)
+
+        val titleView: TextView = binding.title
+        val artistView: TextView = binding.artist
+        val fadeAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_up)
+
+        titleView.startAnimation(fadeAnimation)
+        artistView.startAnimation(fadeAnimation)
+
 
         Handler().postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 1000)
+        }, 4000)
 
     }
 
