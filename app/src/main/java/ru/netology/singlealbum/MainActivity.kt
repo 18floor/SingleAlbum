@@ -23,16 +23,13 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mediaPlayer = MediaPlayer().apply {
+        var mediaPlayer: MediaPlayer? = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build()
             )
-//                    setDataSource(url)
-//                    prepare()
-//                    start()
         }
 
 
@@ -42,12 +39,13 @@ class MainActivity : AppCompatActivity() {
                 val url = BASE_URL + track.file
 
 
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.release()
+                if (mediaPlayer?.isPlaying == true) {
+                    mediaPlayer?.release()
+                    mediaPlayer = null
                 } else {
-                    mediaPlayer.setDataSource(url)
-                    mediaPlayer.prepare()
-                    mediaPlayer.start()
+                    mediaPlayer?.setDataSource(url)
+                    mediaPlayer?.prepare()
+                    mediaPlayer?.start()
                 }
 
 
