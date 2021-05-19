@@ -1,10 +1,9 @@
 package ru.netology.singlealbum
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
+import android.media.MediaPlayer.OnCompletionListener
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.netology.singlealbum.BuildConfig.BASE_URL
@@ -12,59 +11,29 @@ import ru.netology.singlealbum.adapter.AlbumAdapter
 import ru.netology.singlealbum.adapter.OnInteractionListener
 import ru.netology.singlealbum.databinding.ActivityMainBinding
 import ru.netology.singlealbum.dto.Track
+import ru.netology.singlealbum.player.MediaLifecycleObserver
 import ru.netology.singlealbum.viewmodel.AlbumViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: AlbumViewModel by viewModels()
+    private val mediaObserver = MediaLifecycleObserver()
+    private var playList: List<Track> = emptyList()
+    private var currentIndex = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var mediaPlayer: MediaPlayer? = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-        }
-
+        lifecycle.addObserver(mediaObserver)
 
         val adapter = AlbumAdapter(object : OnInteractionListener {
             override fun onPlayPause(track: Track) {
 
-                val url = BASE_URL + track.file
-
-
-                if (mediaPlayer?.isPlaying == true) {
-                    mediaPlayer?.release()
-                    mediaPlayer = null
-                } else {
-                    mediaPlayer?.setDataSource(url)
-                    mediaPlayer?.prepare()
-                    mediaPlayer?.start()
-                }
-
-
-
-
-
-//                mediaObserver.apply {
-//                    player?.setDataSource(
-//                        BASE_URL + track.file
-//                    )
-//                }.let {
-//
-//                    if (it.player?.isPlaying == true) {
-//                        it.player?.pause()
-//                    } else {
-//                        it.play()
-//                    }
-//
-//                }
+                playerController(BASE_URL + track.file)
 
             }
         })
@@ -81,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.album.observe(this) { state ->
 
             binding.progressView.isVisible = state.loading
+            playList = state.album.tracks
 
             binding.titleView.text = state.album.title
             binding.artistView.text = state.album.artist
@@ -88,9 +58,44 @@ class MainActivity : AppCompatActivity() {
             binding.publishedView.text = state.album.published
             binding.genreView.text = state.album.genre
 
-            adapter.submitList(state.album.tracks)
+            adapter.submitList(playList)
+
+        }
+
+    }
+
+
+    fun playerController(url: String) {
+
+        val endListener =
+            OnCompletionListener {
+                mediaObserver.apply {
+                    onPause()
+                }
+            }
+
+        val nextListener =
+            OnCompletionListener {
+                mediaObserver.apply {
+                    onPause()
+                    player?.setOnCompletionListener(endListener)
+                    player?.setDataSource(BASE_URL + playList[1].file)
+                    onPlay()
+                }
+            }
+
+        mediaObserver.apply {
+            if (player?.isPlaying == true) {
+                onPause()
+            } else {
+                player?.setOnCompletionListener(nextListener)
+                player?.setDataSource(url)
+                onPlay()
+            }
         }
 
 
     }
+
+
 }
