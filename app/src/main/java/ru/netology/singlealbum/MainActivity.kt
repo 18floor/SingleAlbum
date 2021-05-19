@@ -14,13 +14,13 @@ import ru.netology.singlealbum.dto.Track
 import ru.netology.singlealbum.player.MediaLifecycleObserver
 import ru.netology.singlealbum.viewmodel.AlbumViewModel
 
-
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: AlbumViewModel by viewModels()
     private val mediaObserver = MediaLifecycleObserver()
     private var playList: List<Track> = emptyList()
     private var currentIndex = 0
+    private var currentTrack = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPlayPause(track: Track) {
 
                 playerController(BASE_URL + track.file)
+                currentTrack = track.id
 
             }
         })
@@ -52,13 +53,19 @@ class MainActivity : AppCompatActivity() {
             binding.progressView.isVisible = state.loading
             playList = state.album.tracks
 
-            binding.titleView.text = state.album.title
-            binding.artistView.text = state.album.artist
-            binding.subtitleView.text = state.album.subtitle
-            binding.publishedView.text = state.album.published
-            binding.genreView.text = state.album.genre
+            binding.apply {
+                titleView.text = state.album.title
+                artistView.text = state.album.artist
+                subtitleView.text = state.album.subtitle
+                publishedView.text = state.album.published
+                genreView.text = state.album.genre
+            }
 
             adapter.submitList(playList)
+
+            playList.forEachIndexed { index, track ->
+                if (track.id == currentTrack) currentIndex = index
+            }
 
         }
 
@@ -79,8 +86,11 @@ class MainActivity : AppCompatActivity() {
                 mediaObserver.apply {
                     onPause()
                     player?.setOnCompletionListener(endListener)
-                    player?.setDataSource(BASE_URL + playList[1].file)
-                    onPlay()
+                    if (currentIndex < playList.size) {
+                        currentIndex++
+                        player?.setDataSource(BASE_URL + playList[currentIndex].file)
+                        onPlay()
+                    }
                 }
             }
 
@@ -93,8 +103,6 @@ class MainActivity : AppCompatActivity() {
                 onPlay()
             }
         }
-
-
     }
 
 
