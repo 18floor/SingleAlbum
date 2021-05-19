@@ -74,21 +74,16 @@ class MainActivity : AppCompatActivity() {
 
     fun playerController(url: String) {
 
-        val endListener =
-            OnCompletionListener {
-                mediaObserver.apply {
-                    onPause()
-                }
-            }
-
         val nextListener =
             OnCompletionListener {
                 mediaObserver.apply {
                     onPause()
-                    player?.setOnCompletionListener(endListener)
-                    if (currentIndex < playList.size) {
+                    if (currentIndex <= playList.size) {
                         currentIndex++
                         player?.setDataSource(BASE_URL + playList[currentIndex].file)
+                        onPlay()
+                    } else {
+                        player?.setDataSource(BASE_URL + playList[0].file)
                         onPlay()
                     }
                 }
