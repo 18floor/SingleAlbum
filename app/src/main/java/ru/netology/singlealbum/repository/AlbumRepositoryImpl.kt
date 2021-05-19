@@ -12,11 +12,7 @@ import ru.netology.singlealbum.model.ApiError
 import ru.netology.singlealbum.model.NetworkError
 import ru.netology.singlealbum.model.UnknownError
 
-//@Suppress("UNREACHABLE_CODE")
 class AlbumRepositoryImpl(private val dao: TrackDao) : AlbumRepository {
-
-    override val data = dao.getTracks().map(List<TrackEntity>::toDto)
-
 
     override suspend fun getAlbum(): Album {
         try {
@@ -24,10 +20,7 @@ class AlbumRepositoryImpl(private val dao: TrackDao) : AlbumRepository {
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw  ApiError(response.code(), response.message())
-            return body
-
-            dao.insertTracks(body.tracks.toEntity())
+            return response.body() ?: throw  ApiError(response.code(), response.message())
 
         } catch (e: IOException) {
             throw NetworkError
@@ -35,5 +28,21 @@ class AlbumRepositoryImpl(private val dao: TrackDao) : AlbumRepository {
             throw  UnknownError
         }
     }
+
+    override suspend fun insertTracks() {
+        dao.insertTracks(getAlbum().tracks.toEntity())
+    }
+
+    override suspend fun isPlayed(id: Int) {
+        try {
+            dao.isPlayed(id)
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw  UnknownError
+        }
+    }
+
+    override val data = dao.getTracks().map(List<TrackEntity>::toDto)
 
 }

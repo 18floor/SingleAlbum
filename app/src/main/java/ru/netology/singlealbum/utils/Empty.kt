@@ -17,6 +17,6 @@ object Empty {
     val emptyTracks = Track(
         id = 0,
         file = "",
-        isPayed = false,
+        isPlayed = false,
     )
 }

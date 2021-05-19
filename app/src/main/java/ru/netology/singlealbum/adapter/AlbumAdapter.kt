@@ -36,8 +36,8 @@ class TrackViewHolder(
 
         binding.apply {
             trackName.text = track.file
+            playPauseButton.isChecked = track.isPlayed
             playPauseButton.setOnClickListener {
-//                playPauseButton.isCheckable = false
                 onInteractionListener.onPlayPause(track)
             }
         }

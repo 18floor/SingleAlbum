@@ -24,7 +24,7 @@ data class TrackEntity(
             TrackEntity(
                 dto.id,
                 dto.file,
-                dto.isPayed,
+                dto.isPlayed,
             )
     }
 }

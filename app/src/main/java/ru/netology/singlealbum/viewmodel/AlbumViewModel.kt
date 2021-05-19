@@ -14,6 +14,7 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: AlbumRepository =
         AlbumRepositoryImpl(AppDb.getInstance(context = application).trackDao())
 
+
     val data: LiveData<TrackModel> = repository.data.map(::TrackModel)
 
     private val _album = MutableLiveData(AlbumModel())
@@ -27,8 +28,18 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadAlbum() = viewModelScope.launch {
         try {
             _album.value = AlbumModel(loading = true)
+            repository.insertTracks()
             _album.value = AlbumModel(repository.getAlbum())
 
+        } catch (e: Exception) {
+            _album.value = AlbumModel(error = true)
+        }
+    }
+
+    fun isPlayed(id: Int) = viewModelScope.launch {
+
+        try {
+            repository.isPlayed(id)
         } catch (e: Exception) {
             _album.value = AlbumModel(error = true)
         }
