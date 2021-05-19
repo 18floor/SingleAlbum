@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
                 currentTrack = track.id
 
             }
-        })
 
+        })
 
 
         binding.albumList.adapter = adapter
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val nextListener =
             OnCompletionListener {
                 mediaObserver.apply {
-                    onPause()
+                    onStop()
                     if (currentIndex <= playList.size) {
                         currentIndex++
                         player?.setDataSource(BASE_URL + playList[currentIndex].file)
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
         mediaObserver.apply {
             if (player?.isPlaying == true) {
-                onPause()
+                onStop()
             } else {
                 player?.setOnCompletionListener(nextListener)
                 player?.setDataSource(url)
