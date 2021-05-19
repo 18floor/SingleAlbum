@@ -12,6 +12,5 @@ data class AlbumModel(
 
 data class TrackModel(
     val tracks: List<Track> = emptyList(),
-    val loading: Boolean = false,
-    val error: Boolean = false,
+    val empty: Boolean = false,
 )

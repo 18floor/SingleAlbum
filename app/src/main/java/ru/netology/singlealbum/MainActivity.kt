@@ -14,14 +14,12 @@ import ru.netology.singlealbum.dto.Track
 import ru.netology.singlealbum.player.MediaLifecycleObserver
 import ru.netology.singlealbum.viewmodel.AlbumViewModel
 
-
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: AlbumViewModel by viewModels()
     private val mediaObserver = MediaLifecycleObserver()
     private var playList: List<Track> = emptyList()
     private var currentIndex = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         val nextListener =
             OnCompletionListener {
                 mediaObserver.apply {
+                    //тут препарируем лист треков - каждый раз добавляя следующий
                     onPause()
                     player?.setOnCompletionListener(endListener)
                     player?.setDataSource(BASE_URL + playList[1].file)
@@ -95,8 +94,6 @@ class MainActivity : AppCompatActivity() {
                 onPlay()
             }
         }
-
-
     }
 
 

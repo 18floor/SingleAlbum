@@ -6,14 +6,16 @@ import ru.netology.singlealbum.dto.Track
 
 @Entity
 data class TrackEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val file: String,
+    val isPlayed: Boolean = false,
 ) {
     fun toDto(): Track {
         return Track(
             id,
             file,
+            isPlayed,
         )
     }
 
@@ -22,6 +24,7 @@ data class TrackEntity(
             TrackEntity(
                 dto.id,
                 dto.file,
+                dto.isPayed,
             )
     }
 }
