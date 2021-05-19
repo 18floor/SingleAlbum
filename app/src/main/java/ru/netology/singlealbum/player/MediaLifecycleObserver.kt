@@ -8,8 +8,15 @@ import androidx.lifecycle.OnLifecycleEvent
 class MediaLifecycleObserver : LifecycleObserver {
     var player: MediaPlayer? = MediaPlayer()
 
-    fun play() {
+    fun onPlay() {
         player?.setOnPreparedListener {
+            it.start()
+        }
+        player?.prepareAsync()
+    }
+
+    fun onCompletion() {
+        player?.setOnCompletionListener {
             it.start()
         }
         player?.prepareAsync()
@@ -17,7 +24,7 @@ class MediaLifecycleObserver : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        player?.pause()
+        player?.reset()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
