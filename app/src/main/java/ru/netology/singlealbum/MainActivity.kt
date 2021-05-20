@@ -2,7 +2,6 @@ package ru.netology.singlealbum
 
 import android.media.MediaPlayer.OnCompletionListener
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -91,8 +90,14 @@ class MainActivity : AppCompatActivity() {
             }
 
         mediaObserver.apply {
-            if (player?.isPlaying == true) {
-                onStop()
+            if (player != null && player?.isPlaying == true) {
+                if (currentTrack != currentIndex + 1) {
+                    onStop()
+                    player?.setDataSource(url)
+                    onPlay()
+                } else {
+                    onStop()
+                }
             } else {
                 player?.setOnCompletionListener(nextListener)
                 player?.setDataSource(url)
@@ -100,6 +105,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 }
