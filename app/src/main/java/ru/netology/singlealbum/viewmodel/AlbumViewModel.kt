@@ -28,8 +28,8 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadAlbum() = viewModelScope.launch {
         try {
             _album.value = AlbumModel(loading = true)
-            repository.insertTracks()
             _album.value = AlbumModel(repository.getAlbum())
+            repository.insertTracks()
 
         } catch (e: Exception) {
             _album.value = AlbumModel(error = true)
@@ -37,13 +37,10 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun isPlayed(id: Int) = viewModelScope.launch {
-
         try {
             repository.isPlayed(id)
         } catch (e: Exception) {
             _album.value = AlbumModel(error = true)
         }
     }
-
-
 }

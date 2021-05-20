@@ -30,7 +30,13 @@ class AlbumRepositoryImpl(private val dao: TrackDao) : AlbumRepository {
     }
 
     override suspend fun insertTracks() {
-        dao.insertTracks(getAlbum().tracks.toEntity())
+        try {
+            dao.insertTracks(getAlbum().tracks.toEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw  UnknownError
+        }
     }
 
     override suspend fun isPlayed(id: Int) {
