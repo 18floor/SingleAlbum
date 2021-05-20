@@ -13,4 +13,5 @@ data class Album(
 data class Track(
     val id: Int,
     val file: String,
+    val isPlayed: Boolean = false,
 )

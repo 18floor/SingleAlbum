@@ -1,18 +1,21 @@
 package ru.netology.singlealbum.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import ru.netology.singlealbum.db.AppDb
 import ru.netology.singlealbum.model.AlbumModel
+import ru.netology.singlealbum.model.TrackModel
 import ru.netology.singlealbum.repository.AlbumRepository
 import ru.netology.singlealbum.repository.AlbumRepositoryImpl
 
 class AlbumViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: AlbumRepository = AlbumRepositoryImpl()
+    private val repository: AlbumRepository =
+        AlbumRepositoryImpl(AppDb.getInstance(context = application).trackDao())
+
+
+    val data: LiveData<TrackModel> = repository.data.map(::TrackModel)
 
     private val _album = MutableLiveData(AlbumModel())
     val album: LiveData<AlbumModel>
@@ -26,10 +29,18 @@ class AlbumViewModel(application: Application) : AndroidViewModel(application) {
         try {
             _album.value = AlbumModel(loading = true)
             _album.value = AlbumModel(repository.getAlbum())
+            repository.insertTracks()
 
         } catch (e: Exception) {
             _album.value = AlbumModel(error = true)
         }
     }
 
+    fun isPlayed(id: Int) = viewModelScope.launch {
+        try {
+            repository.isPlayed(id)
+        } catch (e: Exception) {
+            _album.value = AlbumModel(error = true)
+        }
+    }
 }

@@ -2,7 +2,6 @@ package ru.netology.singlealbum
 
 import android.media.MediaPlayer.OnCompletionListener
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     private var currentIndex = 0
     private var currentTrack = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,13 +32,12 @@ class MainActivity : AppCompatActivity() {
         val adapter = AlbumAdapter(object : OnInteractionListener {
             override fun onPlayPause(track: Track) {
 
-                playerController(BASE_URL + track.file)
+                viewModel.isPlayed(track.id)
                 currentTrack = track.id
+                playerController(BASE_URL + track.file)
 
             }
-
         })
-
 
         binding.albumList.adapter = adapter
 
@@ -48,11 +45,9 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(binding.albumList.context, DividerItemDecoration.VERTICAL),
         )
 
-
         viewModel.album.observe(this) { state ->
 
             binding.progressView.isVisible = state.loading
-            playList = state.album.tracks
 
             binding.apply {
                 titleView.text = state.album.title
@@ -61,17 +56,18 @@ class MainActivity : AppCompatActivity() {
                 publishedView.text = state.album.published
                 genreView.text = state.album.genre
             }
+        }
 
+        viewModel.data.observe(this) { state ->
+
+            playList = state.tracks
             adapter.submitList(playList)
 
             playList.forEachIndexed { index, track ->
                 if (track.id == currentTrack) currentIndex = index
             }
-
         }
-
     }
-
 
     fun playerController(url: String) {
 
@@ -81,7 +77,11 @@ class MainActivity : AppCompatActivity() {
                     onStop()
                     if (currentIndex <= playList.size) {
                         currentIndex++
-                        player?.setDataSource(BASE_URL + playList[currentIndex].file)
+                        currentTrack++
+                        player?.setDataSource(BASE_URL + playList[currentIndex].file).let {
+                            viewModel.isPlayed(currentTrack - 1)
+                            viewModel.isPlayed(currentTrack)
+                        }
                         onPlay()
                     } else {
                         player?.setDataSource(BASE_URL + playList[0].file)
@@ -91,15 +91,20 @@ class MainActivity : AppCompatActivity() {
             }
 
         mediaObserver.apply {
-            if (player?.isPlaying == true) {
-                onStop()
-            } else {
+            if (player != null && player?.isPlaying == true) {
+                if (currentTrack != currentIndex + 1) {
+                    onStop()
+                    viewModel.isPlayed(currentIndex + 1)
+                    player?.setDataSource(url)
+                    onPlay()
+                } else {
+                    onStop()
+                }
+            } else if (player != null) {
                 player?.setOnCompletionListener(nextListener)
                 player?.setDataSource(url)
                 onPlay()
             }
         }
     }
-
-
 }

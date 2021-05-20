@@ -12,7 +12,6 @@ import ru.netology.singlealbum.databinding.SplashScreenBinding
 @Suppress("DEPRECATION")
 class SplashScreen : AppCompatActivity() {
 
-
     private val binding by lazy { SplashScreenBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +37,4 @@ class SplashScreen : AppCompatActivity() {
         }, 4000)
 
     }
-
-
 }
