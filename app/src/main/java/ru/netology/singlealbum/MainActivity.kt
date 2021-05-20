@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private val mediaObserver = MediaLifecycleObserver()
     private var playList: List<Track> = emptyList()
     private var currentIndex = 0
+    private var currentTrack = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +34,11 @@ class MainActivity : AppCompatActivity() {
             override fun onPlayPause(track: Track) {
 
                 playerController(BASE_URL + track.file)
-                viewModel.isPlayed(track.id)
+                currentTrack = track.id
 
             }
-        })
 
+        })
 
 
         binding.albumList.adapter = adapter
@@ -49,18 +51,22 @@ class MainActivity : AppCompatActivity() {
         viewModel.album.observe(this) { state ->
 
             binding.progressView.isVisible = state.loading
+            playList = state.album.tracks
 
-            binding.titleView.text = state.album.title
-            binding.artistView.text = state.album.artist
-            binding.subtitleView.text = state.album.subtitle
-            binding.publishedView.text = state.album.published
-            binding.genreView.text = state.album.genre
+            binding.apply {
+                titleView.text = state.album.title
+                artistView.text = state.album.artist
+                subtitleView.text = state.album.subtitle
+                publishedView.text = state.album.published
+                genreView.text = state.album.genre
+            }
 
-        }
-
-        viewModel.data.observe(this) { state ->
-            playList = state.tracks
             adapter.submitList(playList)
+
+            playList.forEachIndexed { index, track ->
+                if (track.id == currentTrack) currentIndex = index
+            }
+
         }
 
     }
