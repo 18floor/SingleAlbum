@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPlayPause(track: Track) {
 
                 playerController(BASE_URL + track.file)
+                viewModel.isPlayed(track.id)
 
             }
         })
@@ -67,27 +68,24 @@ class MainActivity : AppCompatActivity() {
 
     fun playerController(url: String) {
 
-        val endListener =
-            OnCompletionListener {
-                mediaObserver.apply {
-                    onPause()
-                }
-            }
-
         val nextListener =
             OnCompletionListener {
                 mediaObserver.apply {
-                    //тут препарируем лист треков - каждый раз добавляя следующий
-                    onPause()
-                    player?.setOnCompletionListener(endListener)
-                    player?.setDataSource(BASE_URL + playList[1].file)
-                    onPlay()
+                    onStop()
+                    if (currentIndex <= playList.size) {
+                        currentIndex++
+                        player?.setDataSource(BASE_URL + playList[currentIndex].file)
+                        onPlay()
+                    } else {
+                        player?.setDataSource(BASE_URL + playList[0].file)
+                        onPlay()
+                    }
                 }
             }
 
         mediaObserver.apply {
             if (player?.isPlaying == true) {
-                onPause()
+                onStop()
             } else {
                 player?.setOnCompletionListener(nextListener)
                 player?.setDataSource(url)

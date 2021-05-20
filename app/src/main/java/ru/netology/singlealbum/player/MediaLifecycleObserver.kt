@@ -15,21 +15,13 @@ class MediaLifecycleObserver : LifecycleObserver {
         player?.prepareAsync()
     }
 
-    fun onCompletion() {
-        player?.setOnCompletionListener {
-            it.start()
-        }
-        player?.prepareAsync()
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        player?.reset()
+        player?.pause()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        player?.release()
-        player = null
+        player?.reset()
     }
 }
