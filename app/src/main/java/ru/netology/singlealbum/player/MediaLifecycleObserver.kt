@@ -20,6 +20,11 @@ class MediaLifecycleObserver : LifecycleObserver {
         player?.pause()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume() {
+        player?.start()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
         player?.reset()
