@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycle.addObserver(mediaObserver)
+//        Уберу привязку к жизненному циклу - мне больше нравится когда музыка играет в бэкграунде
+//        lifecycle.addObserver(mediaObserver)
 
         val adapter = AlbumAdapter(object : OnInteractionListener {
             override fun onPlayPause(track: Track) {
